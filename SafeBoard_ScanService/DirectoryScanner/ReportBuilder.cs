@@ -34,7 +34,7 @@ namespace SafeBoard_SecondTask.DirectoryScanner
 
             resultBuilder.AppendLine($"Exection time: {info.ScanningTime}");
 
-            resultBuilder.AppendLine($"MB read: {Math.Round(info.BytesRead / 1024 / 1024f, 3)}");
+            resultBuilder.AppendLine($"MB read: {Math.Round(info.BytesRead / 1024 / 1024f, 3).ToString().Replace(',', '.')}");
 
             resultBuilder.AppendLine("=========================");
 
