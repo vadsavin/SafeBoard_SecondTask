@@ -26,7 +26,7 @@ namespace SafeBoard_SecondTask.DirectoryScanner
         /// <summary>
         /// Запуск работы сканера. Parallel используется для увелечения скорости работы. 
         /// </summary>
-        public async Task ScanAsync(string path)
+        public Task ScanAsync(string path)
         {
             try
             {
@@ -34,11 +34,12 @@ namespace SafeBoard_SecondTask.DirectoryScanner
                 _reportInfo.ScanningDirectory = path;
                 _reportInfo.StartScanning();
 
-                await Task.Run(() => RunScanJob(path));
+                return Task.Run(() => RunScanJob(path));
             }
-            finally
+            catch
             {
                 _reportInfo.EndScanning();
+                throw;
             }
         }
 
@@ -54,6 +55,8 @@ namespace SafeBoard_SecondTask.DirectoryScanner
             Detector detector = new Detector(Rules);
 
             Parallel.ForEach(filesEnumerator, parallelOptions, filePath => ScanSingleFile(detector, filePath));
+
+            _reportInfo.EndScanning();
         }
 
         private void ScanSingleFile(Detector detector, string filePath)

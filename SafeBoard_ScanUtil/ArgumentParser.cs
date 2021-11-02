@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeBoard_ScanCLI
 {
-    public class ArgumentParser
+    public sealed class ArgumentParser
     {
-        public static Dictionary<string, string> Parse(string[] args)
+        public static CommandArguments Parse(string[] args)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
 
             if (args.Length < 1) return null;
 
-            string name = args[0];
-            result["name"] = name;
+            string commandName = args[0];
 
             args = args.Skip(1).ToArray();
 
@@ -28,12 +24,12 @@ namespace SafeBoard_ScanCLI
                 }
                 else if(!arg.StartsWith("--") && key != null)
                 {
-                    result[key[2..]] = arg;
+                    arguments[key[2..]] = arg;
                     key = null;
                 }
             }
 
-            return result;
+            return new CommandArguments(commandName, arguments);
         }
     }
 }

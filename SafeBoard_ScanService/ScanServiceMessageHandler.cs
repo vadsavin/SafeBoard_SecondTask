@@ -11,22 +11,39 @@ namespace SafeBoard_ScanService
 {
     public class ScanServiceMessageHandler : MessageHandler
     {
-        public ScannerServiceNetworker Server { get; }
+        public ScannerServiceNetworker Service { get; }
 
-        public ScanServiceMessageHandler(ScannerServiceNetworker server, ScanSession session)   
+        public ScanServiceMessageHandler(ScannerServiceNetworker service, ScanSession session)   
             : base(session)
         {
-            Server = server;
+            Service = service;
+
+            OnRecievedPacket += HandleMessage;
         }
 
-        public override void HandleExecutionPacket(ExecutionPacket packet)
+        public void HandleStartScanPacket(StartScanPacket packet)
         {
-            Server.Handle(packet, this);
+            var result = Service.StartScanInDirectory(packet.DirectoryPath);
+            SendPacket(result);
         }
 
-        public override void HandleStatusPacket(StatusPacket packet)
+        public void HandleStatusRequestPacket(StatusRequestPacket packet)
         {
-            Server.Handle(packet, this);
+            var result = Service.GetScanTaskStatus(packet.Guid);
+            SendPacket(result);
+        }
+
+        private void HandleMessage(object sender, PacketEventArgs e)
+        {
+            switch (e.Packet)
+            {
+                case StartScanPacket startScanPacket:
+                    HandleStartScanPacket(startScanPacket);
+                    break;
+                case StatusRequestPacket statusRequestPacket:
+                    HandleStatusRequestPacket(statusRequestPacket);
+                    break;
+            }
         }
     }
 }

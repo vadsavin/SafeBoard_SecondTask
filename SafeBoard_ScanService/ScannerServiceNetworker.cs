@@ -6,6 +6,7 @@ using SafeBoard_SecondTask.DirectoryScanner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,36 +14,56 @@ namespace SafeBoard_ScanService
 {
     public class ScannerServiceNetworker
     {
-        public ScanServer Server { get; }
+        private readonly ScanServer _server;
+        private readonly ScannerService _service;
 
-        private ScannerService _service;
+        public IPEndPoint ServerEndPoint => _server?.Endpoint;
 
         public ScannerServiceNetworker()
         {
             Func<ScanSession, MessageHandler> createSession = session => new ScanServiceMessageHandler(this, session);
 
-            Server = new ScanServer("127.0.0.1", 2021, createSession);
+            _server = new ScanServer("127.0.0.1", 2021, createSession);
 
             _service = new ScannerService();
         }
 
         public void Run()
         {
-            Server.Start();
+            _server.Start();
         }
 
-        public void Handle(ExecutionPacket packet, MessageHandler handler)
+        public void Stop()
         {
-            var scannerTask = _service.AddAndRunNewDefaultTaskAsync(packet.Directory);
-            packet.Guid = scannerTask.Guid.ToString();
-            handler.SendPacket<ExecutionPacket>(packet);
+            _server.Stop();
         }
 
-        public void Handle(StatusPacket packet, MessageHandler handler)
+        public ScanReturnsPacket StartScanInDirectory(string directoryPath)
         {
-            packet.Status = _service.GetTaskStatus(packet.Guid);
-            
-            handler.SendPacket<StatusPacket>(packet);
+            var packet = new ScanReturnsPacket();
+            try
+            {
+                var scannerTask = _service.AddAndRunNewDefaultTaskAsync(directoryPath);
+                packet.ScanTaskGuid = scannerTask.Guid;
+                packet.Started = true;
+            }
+            catch(Exception e)
+            {
+                packet.Started = false;
+                packet.Message = e.Message;
+            }
+
+            return packet;
+        }
+
+        public StatusPacket GetScanTaskStatus(Guid guid)
+        {
+            var status = _service.GetTaskStatus(guid);
+
+            var packet = new StatusPacket();
+            packet.Status = status;
+
+            return packet;
         }
     }
 }

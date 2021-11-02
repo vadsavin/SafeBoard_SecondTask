@@ -1,4 +1,5 @@
-﻿using SafeBoard_ScanService;
+﻿using SafeBoard_ScanAPI.Contracts;
+using SafeBoard_ScanService;
 using SafeBoard_ScanService.Utils;
 using SafeBoard_SecondTask.DirectoryScanner.Contacts;
 using System;
@@ -74,25 +75,40 @@ namespace SafeBoard_SecondTask.DirectoryScanner
             return GetAllTasks().Where(task => task.Scanner.ReportInfo.ScanInProgress);
         }
 
-        public string GetTaskStatus(string id)
+        public ScanStatus GetTaskStatus(Guid guid)
         {
-            Guid guid;
-            try
-            {
-                guid = new Guid(id);
-            }
-            catch
-            {
-                return DefaultMessages.InvalidGuidFormat;
-            }
-
             if (Tasks.TryGetValue(guid, out var scanTask))
             {
-                return StatusBuilder.GenereteStatus(scanTask.Scanner.ReportInfo);
+                var info = scanTask.Scanner.ReportInfo;
+
+                var reportsByType = new Dictionary<DetectionReportType, int>();
+                foreach (DetectionReportType type in Enum.GetValues<DetectionReportType>())
+                {
+                    reportsByType.Add(type, info.GetReportsByType(type).Count());
+                }
+
+                var reportsByRule = new Dictionary<string, int>();
+                var malvares = info.GetReportsByType(DetectionReportType.Malvare);
+                foreach (var rule in info.Rules)
+                {
+                    var malvaresByRule = malvares.Where(report => report.Rule == rule);
+                    reportsByRule.Add(rule.RuleName, malvaresByRule.Count());
+                }
+
+                return new ScanStatus()
+                {
+                    IsRunning = info.ScanInProgress,
+                    ScanningTime = info.ScanningTime,
+                    BytesRead = info.BytesRead,
+                    FilesProcessed = info.GetAmountOfReports(),
+                    DirectoryPath = scanTask.DirectoryToScan,
+                    ReportsByRule = reportsByRule,
+                    ReportsByType = reportsByType
+                };
             }
             else
             {
-                return DefaultMessages.NoSuchScannerTaskId;
+                return new ScanStatus();
             }
         }
     }

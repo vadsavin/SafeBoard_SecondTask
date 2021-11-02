@@ -9,27 +9,18 @@ namespace SafeBoard_ScanUtil
     {
         static void Main(string[] args)
         {
-            var cli = new CLI();
-            cli.InitializeParser<ExitCommand>();
-            cli.InitializeParser<StatusCommand>();
-            cli.InitializeParser<ScanCommand>();
-            cli.InitializeParser<HelpCommand>();
+            var arguments = ArgumentParser.Parse(args);
 
-            cli.Run();
-
-            while (cli.IsRunning)
+            var parser = new BaseParser();
+            if(parser.TryParse(arguments, out var command))
             {
-                var arguments = ArgumentParser.Parse(Console.ReadLine().Split(" "));
-                var command = CommonParser.TryGetCommand(arguments);
-                if (command != null)
-                {
-                    command.Execute(cli, arguments);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid args or command name.");
-                }
+                command.Execute();
             }
+            else
+            {
+                Console.WriteLine(parser.Description);
+            }
+            
         }
     }
 }

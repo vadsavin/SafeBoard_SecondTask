@@ -1,23 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeBoard_ScanCLI.Commands
 {
-    public class StatusCommand : ICommand
+    public class StatusCommand : BaseCommand, ICommand
     {
-        public string Name { get; } = "status";
-        public string[] RequiredParams { get; } = new string[] { "guid" };
-        public string[] OptionalParams { get; } = new string[] { };
+        public Guid Guid { get; }
 
-        public void Execute(CLI cli, Dictionary<string, string> args)
+        public StatusCommand(Guid guid) : base()
         {
-            if (args.TryGetValue("guid", out string guid))
+            Guid = guid;
+        }
+
+        public void Execute()
+        {
+            var result = _facade.GetStatus(Guid);
+            var status = result.Status;
+
+            _facade.SendOutput(nameof(status.IsRunning), status.IsRunning.ToString());
+            _facade.SendOutput(nameof(status.ScanningTime), status.ScanningTime.ToString());
+            _facade.SendOutput(nameof(status.DirectoryPath), status.DirectoryPath);
+            _facade.SendOutput(nameof(status.BytesRead), status.BytesRead.ToString());
+            _facade.SendOutput(nameof(status.FilesProcessed), status.FilesProcessed.ToString());
+            _facade.SendOutput(nameof(status.ReportsByType), GetStringFromDictionary(status.ReportsByType));
+            _facade.SendOutput(nameof(status.ReportsByRule), GetStringFromDictionary(status.ReportsByRule));
+        }
+
+        private string GetStringFromDictionary<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
+        {
+            if (dictionary == null) return string.Empty;
+
+            var sb = new StringBuilder("[\n");
+            foreach (var pair in dictionary)
             {
-                cli.GetStatus(guid);
+                sb.AppendLine($"   {pair.Key}: {pair.Value}");
             }
+            sb.AppendLine("]");
+
+            return sb.ToString();
         }
     }
 }

@@ -10,10 +10,10 @@ namespace SafeBoard_ScanService
             var networker = new ScannerServiceNetworker();
 
             networker.Run();
-            Console.WriteLine($"Server started at {networker.Server.Endpoint}");
+            Console.WriteLine($"Server started at {networker.ServerEndPoint}");
 
             Console.ReadKey();
-            networker.Server.Stop();
+            networker.Stop();
         }
     }
 }

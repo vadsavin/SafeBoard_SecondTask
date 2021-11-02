@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SafeBoard_ScanAPI.Server
 {
-    public class ScanSession : TcpSession
+    public class ScanSession : TcpSession, ISession
     {
         MessageHandler MessageHandler { get; }
 

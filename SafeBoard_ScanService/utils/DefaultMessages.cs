@@ -10,6 +10,5 @@ namespace SafeBoard_ScanService.Utils
     {
         public static string NoSuchScannerTaskId    => "There's no such task id.";
         public static string ScannerTaskInProgress  => "Current task is still running.";
-        public static string InvalidGuidFormat      => "Invalid Guid format.";
     }
 }

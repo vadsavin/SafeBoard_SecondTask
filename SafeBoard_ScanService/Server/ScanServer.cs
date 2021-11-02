@@ -11,7 +11,6 @@ namespace SafeBoard_ScanAPI.Server
     {
         public ScanServer(string address, int port, Func<ScanSession, MessageHandler> _createSession)
             : base(address, port)
-
         {
             createSession = _createSession;
         }

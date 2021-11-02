@@ -1,22 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SafeBoard_ScanCLI.Commands
+﻿namespace SafeBoard_ScanCLI.Commands
 {
-    public class ScanCommand : ICommand
+    public class ScanCommand : BaseCommand, ICommand
     {
-        public string Name { get; } = "scan";
-        public string[] RequiredParams { get; } = new string[] { "d" };
-        public string[] OptionalParams { get; } = new string[] { };
+        public string DirectoryPath { get; }
 
-        public void Execute(CLI cli, Dictionary<string, string> args)
+        public ScanCommand(string directoryPath) : base()
         {
-            if (args.TryGetValue("d", out var directory))
+            DirectoryPath = directoryPath;
+        } 
+
+        public void Execute()
+        {
+            var result = _facade.ScanDirectory(DirectoryPath);
+
+            _facade.SendOutput(nameof(result.Started), result.Started.ToString());
+            if (result.Started)
             {
-                cli.ScanDirectory(directory);
+                _facade.SendOutput(nameof(result.ScanTaskGuid), result.ScanTaskGuid.ToString());
+            }
+            else
+            {
+                _facade.SendOutput(nameof(result.Message), result.Message);
             }
         }
     }
