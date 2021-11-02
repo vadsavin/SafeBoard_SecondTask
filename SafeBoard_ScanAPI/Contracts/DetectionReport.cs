@@ -1,7 +1,7 @@
-﻿namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
+﻿namespace ScanAPI.Contracts
 {
     /// <summary>
-    /// Хранение и доступ к результатам сканирования.
+    /// Хранение и доступ к результату сканирования.
     /// </summary>
     public class DetectionReport
     {

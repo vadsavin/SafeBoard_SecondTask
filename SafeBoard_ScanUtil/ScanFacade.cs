@@ -1,10 +1,13 @@
-﻿using SafeBoard_ScanAPI;
-using SafeBoard_ScanAPI.Packets;
+﻿using SafeBoard_ScanAPI.Packets;
 using SafeBoard_ScanCLI.Client;
+using ScanAPI.Contracts;
 using System;
 
 namespace SafeBoard_ScanCLI
 {
+    /// <summary>
+    /// Реализует взаимодействие с сетевым клиентом.
+    /// </summary>
     public class ScanFacade
     {
         private readonly ScanClient _client;
@@ -14,9 +17,9 @@ namespace SafeBoard_ScanCLI
             _client = new ScanClient("127.0.0.1", 2021);
         }
 
-        public ScanReturnsPacket ScanDirectory(string directory)
+        public ScanReturnsPacket ScanDirectory(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
         {
-            return _client.SendScanDirectory(directory).Result;
+            return _client.SendScanDirectory(directory, rules, maxDegreeOfParallelism).Result;
         }
 
         public StatusPacket GetStatus(Guid guid)

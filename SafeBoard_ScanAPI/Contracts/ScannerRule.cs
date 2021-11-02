@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
+namespace ScanAPI.Contracts
 {
     public class ScannerRule
     {
@@ -8,15 +8,10 @@ namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
         public string FileNamePattern { get; }
         public string MalvareString { get; }
 
-        public ScannerRule(string ruleName, string malvareString)
+        public ScannerRule(string ruleName, string malvareString, string fileNamePattern = null)
         {
             RuleName = ruleName;
             MalvareString = malvareString;
-        }
-
-        public ScannerRule(string ruleName, string fileNamePattern, string malvareString) 
-            :  this(ruleName, malvareString)
-        {
             FileNamePattern = fileNamePattern;
         }
 

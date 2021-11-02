@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ScanAPI.Contracts;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
+namespace SafeBoard_ScanService.DirectoryScanner
 {
     /// <summary>
     /// Отвечает за хранение и доступ к результатм сканирования.

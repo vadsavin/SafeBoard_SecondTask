@@ -1,7 +1,7 @@
-﻿using SafeBoard_SecondTask.DirectoryScanner.Contacts;
+﻿using ScanAPI.Contracts;
 using System.Threading.Tasks;
 
-namespace SafeBoard_SecondTask.DirectoryScanner
+namespace SafeBoard_ScanService.DirectoryScanner
 {
     public class Scanner
     {

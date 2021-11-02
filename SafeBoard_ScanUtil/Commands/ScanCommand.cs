@@ -1,17 +1,24 @@
-﻿namespace SafeBoard_ScanCLI.Commands
+﻿using ScanAPI.Contracts;
+using System;
+
+namespace SafeBoard_ScanCLI.Commands
 {
     public class ScanCommand : BaseCommand, ICommand
     {
         public string DirectoryPath { get; }
+        public ScannerRule[] Rules { get; }
+        public int? MaxDegreeOfParallelism { get; }
 
-        public ScanCommand(string directoryPath) : base()
+        public ScanCommand(string directoryPath, string rulesPath = null, string maxDegreeOfParallelism = null) : base()
         {
             DirectoryPath = directoryPath;
+            Rules = JsonFileReader.Read<ScannerRule[]>(rulesPath);
+            MaxDegreeOfParallelism = Int32.Parse(maxDegreeOfParallelism);
         } 
 
         public void Execute()
         {
-            var result = _facade.ScanDirectory(DirectoryPath);
+            var result = _facade.ScanDirectory(DirectoryPath, Rules, MaxDegreeOfParallelism);
 
             _facade.SendOutput(nameof(result.Started), result.Started.ToString());
             if (result.Started)

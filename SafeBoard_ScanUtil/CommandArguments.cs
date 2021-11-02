@@ -2,6 +2,9 @@
 
 namespace SafeBoard_ScanCLI
 {
+    /// <summary>
+    /// Хранение имя команды и словаря аргументов.
+    /// </summary>
     public class CommandArguments
     {
         private Dictionary<string, string> _args;

@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace SafeBoard_ScanCLI
 {
+    /// <summary>
+    /// Преобразование string[] в словарь параметр-значение. 
+    /// </summary>
     public sealed class ArgumentParser
     {
         public static CommandArguments Parse(string[] args)

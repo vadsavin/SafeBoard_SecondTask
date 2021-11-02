@@ -1,5 +1,10 @@
-﻿namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
+﻿using ScanAPI.Contracts;
+
+namespace SafeBoard_ScanService.DirectoryScanner
 {
+    /// <summary>
+    /// Результат сканирования блока файла.
+    /// </summary>
     public class BlockScanInfo
     {
         public ScannerRule Rule { get; }

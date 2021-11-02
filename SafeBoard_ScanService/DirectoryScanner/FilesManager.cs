@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace SafeBoard_SecondTask.DirectoryScanner
+namespace SafeBoard_ScanService.DirectoryScanner
 {
     public sealed class FilesManager
     {

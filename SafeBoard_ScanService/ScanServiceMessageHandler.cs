@@ -1,11 +1,6 @@
 ﻿using SafeBoard_ScanAPI;
 using SafeBoard_ScanAPI.Packets;
 using SafeBoard_ScanAPI.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeBoard_ScanService
 {
@@ -23,7 +18,7 @@ namespace SafeBoard_ScanService
 
         public void HandleStartScanPacket(StartScanPacket packet)
         {
-            var result = Service.StartScanInDirectory(packet.DirectoryPath);
+            var result = Service.StartScan(packet.DirectoryPath, packet.Rules, packet.MaxDegreeOfParallelism);
             SendPacket(result);
         }
 

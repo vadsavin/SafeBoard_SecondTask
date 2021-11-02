@@ -1,9 +1,8 @@
-﻿using SafeBoard_SecondTask.DirectoryScanner;
-using SafeBoard_SecondTask.DirectoryScanner.Contacts;
+﻿using ScanAPI.Contracts;
 using System;
 using System.Threading.Tasks;
 
-namespace SafeBoard_SecondTask
+namespace SafeBoard_ScanService.DirectoryScanner
 {
     public class ScannerTask
     {    
@@ -15,9 +14,10 @@ namespace SafeBoard_SecondTask
 
         public Guid Guid { get; }
 
-        public ScannerTask(string directory, ScannerRule[] rules, Guid id)
+        public ScannerTask(string directory, ScannerRule[] rules, int maxDegreeOfParallelism ,Guid id)
         {
             Scanner = new Scanner(rules);
+            Scanner.MaxParallelScanningFiles = maxDegreeOfParallelism;
             DirectoryToScan = directory;
             Guid = id;
         }

@@ -1,4 +1,4 @@
-﻿namespace SafeBoard_SecondTask.DirectoryScanner.Contacts
+﻿namespace ScanAPI.Contracts
 {
     public enum DetectionReportType
     {

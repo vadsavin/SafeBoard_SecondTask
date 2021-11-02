@@ -1,4 +1,4 @@
-﻿using SafeBoard_SecondTask.DirectoryScanner.Contacts;
+﻿using ScanAPI.Contracts;
 using System;
 using System.Collections.Generic;
 

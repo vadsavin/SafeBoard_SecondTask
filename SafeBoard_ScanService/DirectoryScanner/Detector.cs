@@ -1,9 +1,9 @@
-﻿using SafeBoard_SecondTask.DirectoryScanner.Contacts;
+﻿using ScanAPI.Contracts;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace SafeBoard_SecondTask.DirectoryScanner
+namespace SafeBoard_ScanService.DirectoryScanner
 {
     /// <summary>
     /// Отвечает за оптимизирование чтение файла и анализ его содержимого.

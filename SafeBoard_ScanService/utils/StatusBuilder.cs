@@ -1,11 +1,5 @@
-﻿using SafeBoard_ScanService;
+﻿using SafeBoard_ScanService.DirectoryScanner;
 using SafeBoard_ScanService.Utils;
-using SafeBoard_SecondTask.DirectoryScanner;
-using SafeBoard_SecondTask.DirectoryScanner.Contacts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SafeBoard_SecondTask
 {

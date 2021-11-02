@@ -1,5 +1,4 @@
 ﻿using SafeBoard_ScanCLI;
-using SafeBoard_ScanCLI.Commands;
 using SafeBoard_ScanCLI.Parsers;
 using System;
 

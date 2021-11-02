@@ -1,12 +1,10 @@
 ﻿using SafeBoard_ScanAPI.Contracts;
-using SafeBoard_ScanService;
-using SafeBoard_ScanService.Utils;
-using SafeBoard_SecondTask.DirectoryScanner.Contacts;
+using SafeBoard_ScanService.DirectoryScanner;
+using ScanAPI.Contracts;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SafeBoard_SecondTask.DirectoryScanner
 {
@@ -15,7 +13,7 @@ namespace SafeBoard_SecondTask.DirectoryScanner
         //Дефолтные значения правил сканирования, созданные по заданию
         private static readonly ScannerRule[] _defaultRules = new ScannerRule[] 
         { 
-            new ScannerRule("JS", @".*\.js\Z", "<script>evil_script()</script>"),
+            new ScannerRule("JS", "<script>evil_script()</script>", @".*\.js\Z"),
             new ScannerRule("rm -rf", @"rm -rf %userprofile%\Documents"),
             new ScannerRule("Rundll32", "Rundll32 sus.dll SusEntry")
         };
@@ -42,24 +40,24 @@ namespace SafeBoard_SecondTask.DirectoryScanner
         /// <summary>
         /// Создание задачи и запуск сканирования с дефолтными правилами.
         /// </summary>
-        public ScannerTask AddAndRunNewDefaultTaskAsync(string directory)
+        public ScannerTask AddAndRunNewDefaultTaskAsync(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
         {
-            return AddAndRunNewTaskAsync(directory, _defaultRules);
+            return AddAndRunNewTaskAsync(directory, rules, maxDegreeOfParallelism);
         }
 
         /// <summary>
         /// Создание задачи и запуск сканирования по определенным правилам.
         /// </summary>
-        public ScannerTask AddAndRunNewTaskAsync(string directory, ScannerRule[] rules)
+        public ScannerTask AddAndRunNewTaskAsync(string directory, ScannerRule[] rules, int? maxDegreeOfParallelism)
         {
-            var scannerTask = AddNewTask(directory, rules);
+            var scannerTask = AddNewTask(directory, rules, maxDegreeOfParallelism);
             scannerTask.RunAsync();
             return scannerTask;
         }
 
-        private ScannerTask AddNewTask(string directory, ScannerRule[] rules)
+        private ScannerTask AddNewTask(string directory, ScannerRule[] rules, int? maxDegreeOfParallelism)
         {
-            var scannerTask = new ScannerTask(directory, rules, Guid.NewGuid());
+            var scannerTask = new ScannerTask(directory, rules ?? _defaultRules, maxDegreeOfParallelism ?? 5, Guid.NewGuid());
             Tasks.AddOrUpdate(scannerTask.Guid, _ => scannerTask, (_, _) => scannerTask);
 
             return scannerTask;

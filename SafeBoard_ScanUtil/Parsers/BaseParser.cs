@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace SafeBoard_ScanCLI.Parsers
 {
+    /// <summary>
+    /// Основной парсер.
+    /// </summary>
     public class BaseParser : IParser
     {
         public string Description { get; } = string.Join("\n\n", _parsers.Select(parser => parser.Description));
