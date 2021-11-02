@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeBoard_ScanAPI", "SafeBo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeBoard_ScanService", "SafeBoard_ScanService\SafeBoard_ScanService.csproj", "{E3050DE6-8C0A-466B-8664-2A0EC282AF11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8A4DA46D-E990-4794-BCE1-4A4C8F8E0088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E3050DE6-8C0A-466B-8664-2A0EC282AF11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3050DE6-8C0A-466B-8664-2A0EC282AF11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3050DE6-8C0A-466B-8664-2A0EC282AF11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A4DA46D-E990-4794-BCE1-4A4C8F8E0088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4DA46D-E990-4794-BCE1-4A4C8F8E0088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4DA46D-E990-4794-BCE1-4A4C8F8E0088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4DA46D-E990-4794-BCE1-4A4C8F8E0088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
