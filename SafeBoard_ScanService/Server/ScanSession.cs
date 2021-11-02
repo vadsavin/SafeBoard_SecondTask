@@ -20,15 +20,5 @@ namespace SafeBoard_ScanAPI.Server
 
             MessageHandler.Handle(message);
         }
-
-        protected override void OnConnected()
-        {
-            Console.WriteLine($"TCP session with Id {Id} connected!");
-        }
-
-        protected override void OnDisconnected()
-        {
-            Console.WriteLine($"TCP session with Id {Id} disconnected!");
-        }
     }
 }

@@ -13,7 +13,12 @@ namespace SafeBoard_ScanCLI.Commands
         {
             DirectoryPath = directoryPath;
             Rules = JsonFileReader.Read<ScannerRule[]>(rulesPath);
-            MaxDegreeOfParallelism = Int32.Parse(maxDegreeOfParallelism);
+            try
+            {
+                MaxDegreeOfParallelism = Int32.Parse(maxDegreeOfParallelism);
+            }
+            catch { }
+            
         } 
 
         public void Execute()
