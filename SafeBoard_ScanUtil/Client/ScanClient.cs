@@ -1,5 +1,6 @@
 ﻿using NetCoreServer;
 using SafeBoard_ScanAPI;
+using SafeBoard_ScanAPI.Contracts;
 using SafeBoard_ScanAPI.Packets;
 using ScanAPI.Contracts;
 using System;
@@ -25,22 +26,26 @@ namespace SafeBoard_ScanCLI.Client
             _messageHandler.Handle(message);
         }
 
-        public async Task<ScanReturnsPacket> SendScanDirectory(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
+        public async Task<ScanReturns> SendScanDirectory(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
         {
             StartScanPacket packet = new StartScanPacket();
             packet.DirectoryPath = directory;
             packet.Rules = rules;
             packet.MaxDegreeOfParallelism = maxDegreeOfParallelism;
 
-            return await _messageHandler.SendAndWaitAsync<ScanReturnsPacket>(packet);
+            var result = await _messageHandler.SendAndWaitAsync<ScanReturnsPacket>(packet);
+
+            return result.Returns;
         }
 
-        public async Task<StatusPacket> SendGetStatus(Guid guid)
+        public async Task<ScanStatus> SendGetStatus(Guid guid)
         {
             StatusRequestPacket packet = new StatusRequestPacket();
             packet.Guid = guid;
 
-            return await _messageHandler.SendAndWaitAsync<StatusPacket>(packet);
+            var result = await _messageHandler.SendAndWaitAsync<StatusPacket>(packet);
+
+            return result.Status;
         }
     }
 }

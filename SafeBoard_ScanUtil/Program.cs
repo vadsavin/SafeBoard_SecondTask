@@ -6,7 +6,7 @@ namespace SafeBoard_ScanUtil
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             var arguments = ArgumentParser.Parse(args);
 
@@ -14,12 +14,13 @@ namespace SafeBoard_ScanUtil
             if(parser.TryParse(arguments, out var command))
             {
                 command.Execute();
+                return 0;
             }
             else
             {
                 Console.WriteLine(parser.Description);
+                return -1;
             }
-            
         }
     }
 }

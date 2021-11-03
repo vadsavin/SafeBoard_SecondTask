@@ -1,82 +1,24 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using ScanAPI.Contracts;
 using SafeBoard_ScanService.DirectoryScanner;
+using ScanAPI.Contracts;
+using System.Linq;
+using Tests.ScanTests;
 
-namespace Tests.ScanTests
+namespace Tests
 {
     [TestClass]
-    public class ScannerTests
+    public class ScannerTests : ScannerTestsBase
     {
         [TestMethod]
         public void LockedFileScanTest()
         {
-            var rules = new ScannerRule[]
-            {
-                TestsEnviroment.JsRule,
-                TestsEnviroment.RmRule,
-                TestsEnviroment.Rundll32Rule
-            };
-
-            var description = new ReportDescription();
-
-            description.Reports = new Dictionary<DetectionReportType, int>()
-            {
-                { DetectionReportType.Clean, 2 },
-                { DetectionReportType.Skipped, 0 },
-                { DetectionReportType.Malvare, 2 },
-                { DetectionReportType.NoAccess, 0 },
-                { DetectionReportType.Error, 2 },
-                { DetectionReportType.FileNotExists, 0 },
-            };
-            description.Rules = new Dictionary<string, int>()
-            {
-                { TestsEnviroment.JsRule.RuleName, 0 },
-                { TestsEnviroment.RmRule.RuleName, 1 },
-                { TestsEnviroment.Rundll32Rule.RuleName, 1 }
-            };
-
-            using (var jsFile = File.OpenRead(TestsEnviroment.JsMalvareFilePath))
-            using (var cleanFile = File.OpenRead(TestsEnviroment.CleanFilePath))
-            {
-                jsFile.Lock(0, 1);
-                cleanFile.Lock(0, 1);
-
-                BaseScanTest(TestsEnviroment.AffectedDirectory, rules, description);
-            }
+            LockedFileScanTest(BaseScanTest);
         }
 
         [TestMethod]
         public void DefaultScanTest()
         {
-            var rules = new ScannerRule[]
-            {
-                TestsEnviroment.JsRule,
-                TestsEnviroment.RmRule,
-                TestsEnviroment.Rundll32Rule
-            };
-
-            var description = new ReportDescription();
-
-            description.Reports = new Dictionary<DetectionReportType, int>()
-            {
-                { DetectionReportType.Clean, 3 },
-                { DetectionReportType.Skipped, 0 },
-                { DetectionReportType.Malvare, 3 },
-                { DetectionReportType.NoAccess, 0 },
-                { DetectionReportType.Error, 0 },
-                { DetectionReportType.FileNotExists, 0 },
-            };
-            description.Rules = new Dictionary<string, int>()
-            {
-                { TestsEnviroment.JsRule.RuleName, 1 },
-                { TestsEnviroment.RmRule.RuleName, 1 },
-                { TestsEnviroment.Rundll32Rule.RuleName, 1 }
-            };
-
-            BaseScanTest(TestsEnviroment.AffectedDirectory, rules, description);
+            DefaultScanTest(BaseScanTest);
         } 
 
         private void BaseScanTest(string directory, ScannerRule[] rules, ReportDescription expected)

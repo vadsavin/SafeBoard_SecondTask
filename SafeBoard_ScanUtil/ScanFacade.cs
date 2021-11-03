@@ -1,4 +1,4 @@
-﻿using SafeBoard_ScanAPI.Packets;
+﻿using SafeBoard_ScanAPI.Contracts;
 using SafeBoard_ScanCLI.Client;
 using ScanAPI.Contracts;
 using System;
@@ -17,12 +17,12 @@ namespace SafeBoard_ScanCLI
             _client = new ScanClient("127.0.0.1", 2021);
         }
 
-        public ScanReturnsPacket ScanDirectory(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
+        public ScanReturns ScanDirectory(string directory, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
         {
             return _client.SendScanDirectory(directory, rules, maxDegreeOfParallelism).Result;
         }
 
-        public StatusPacket GetStatus(Guid guid)
+        public ScanStatus GetStatus(Guid guid)
         {
             return _client.SendGetStatus(guid).Result;
         }

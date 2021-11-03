@@ -15,8 +15,7 @@ namespace SafeBoard_ScanCLI.Commands
 
         public void Execute()
         {
-            var result = _facade.GetStatus(Guid);
-            var status = result.Status;
+            var status = _facade.GetStatus(Guid);
 
             _facade.SendOutput(nameof(status.IsRunning), status.IsRunning.ToString());
             _facade.SendOutput(nameof(status.ScanningTime), status.ScanningTime.ToString());

@@ -1,4 +1,5 @@
 ﻿using SafeBoard_ScanAPI;
+using SafeBoard_ScanAPI.Contracts;
 using SafeBoard_ScanAPI.Packets;
 using SafeBoard_ScanAPI.Server;
 using SafeBoard_SecondTask.DirectoryScanner;
@@ -36,17 +37,17 @@ namespace SafeBoard_ScanService
 
         public ScanReturnsPacket StartScan(string directoryPath, ScannerRule[] rules = null, int? maxDegreeOfParallelism = null)
         {
-            var packet = new ScanReturnsPacket();
+            var packet = new ScanReturnsPacket() { Returns = new ScanReturns() };
             try
             {
                 var scannerTask = _service.AddAndRunNewDefaultTaskAsync(directoryPath, rules, maxDegreeOfParallelism);
-                packet.ScanTaskGuid = scannerTask.Guid;
-                packet.Started = true;
+                packet.Returns.ScanTaskGuid = scannerTask.Guid;
+                packet.Returns.Started = true;
             }
             catch(Exception e)
             {
-                packet.Started = false;
-                packet.Message = e.Message;
+                packet.Returns.Started = false;
+                packet.Returns.Message = e.Message;
             }
 
             return packet;

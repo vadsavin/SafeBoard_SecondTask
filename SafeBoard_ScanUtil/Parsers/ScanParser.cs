@@ -15,8 +15,15 @@ namespace SafeBoard_ScanCLI.Parsers
             if (!args.TryGetValue("d", out var directoryPath)) return false;
 
             args.TryGetValue("r", out var rulesPath);
-            args.TryGetValue("n", out var maxDegreeOfParallelism);
-            
+
+            args.TryGetValue("n", out var maxDegreeOfParallelismString);
+
+            int? maxDegreeOfParallelism = null;
+            if (int.TryParse(maxDegreeOfParallelismString, out int _maxDegreeOfParallelism))
+            {
+                maxDegreeOfParallelism = _maxDegreeOfParallelism;
+            }
+
             command = new ScanCommand(directoryPath, rulesPath, maxDegreeOfParallelism);
             
             return true;
